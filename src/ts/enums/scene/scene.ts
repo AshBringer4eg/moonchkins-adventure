@@ -3,10 +3,14 @@ export enum Sprite {
 }
 
 export enum Image {
-    PLANET = 'IMG_PLANET',
-    BLANK_POINT = 'BLANK_POINT'
+  BLANK_POINT = 'BLANK_POINT'
+}
+
+export enum Tile {
+  ROOM_UNDISCOVERED = 'ROOM_UNDISCOVERED',
+  ROOM_START = 'ROOM_START'
 }
 
 export enum Background {
-    GRID = 'BG_GRID'
+  GRID = 'BG_GRID'
 }

@@ -1,7 +1,7 @@
 import '../scss/main.scss';
 
 import initializeApplicationConfiguration from './config/config';
-import GameScene from './scene/game';
+import TestScene from './scene/test';
 import LoaderScene from './scene/loader';
 import MenuScene from './scene/menu';
 
@@ -30,7 +30,7 @@ const gameConfig = {
   scene: [
     LoaderScene,
     MenuScene,
-    GameScene,
+    TestScene,
   ],
 };
 

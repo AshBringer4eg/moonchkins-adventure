@@ -20,7 +20,7 @@ export interface ZoomState {
 const CAMERA_ZOOM_TIME = 100;
 
 export class SceneZoomInputComponent extends Component implements Activatable {
-  private zoomState: ZoomState = { min: 1, max: 1.5, step: 0.1, target: 1 };
+  private zoomState: ZoomState = { min: 1, max: 1.5, step: 0.25, target: 1.5 };
 
   private camera: Phaser.Cameras.Scene2D.Camera;
 
@@ -65,16 +65,18 @@ export class SceneZoomInputComponent extends Component implements Activatable {
         this.zoomState.target = newZoom;
         this.camera.zoomTo(newZoom, CAMERA_ZOOM_TIME);
         this.camera.pan(pointer.x, pointer.y, CAMERA_ZOOM_TIME);
+
+        console.log(JSON.stringify(this.zoomState));
       }
     );
   }
 
-  setZoomState(zoomState: ZoomState): void {
+  setZoomState(zoomState: Partial<ZoomState>): void {
     let { min, max, step, target } = zoomState;
-    if (!min) min = 1;
-    if (!max) max = 1;
-    if (!step) step = .1;
-    if (!target) target = 1;
+    if (!min) min = this.zoomState.min || 1;
+    if (!max) max = this.zoomState.max || 1;
+    if (!step) step = this.zoomState.step || .1;
+    if (!target) target =  this.zoomState.target || 1;
     if (min > max) min = max;
 
     this.zoomState = { min, max, step, target };

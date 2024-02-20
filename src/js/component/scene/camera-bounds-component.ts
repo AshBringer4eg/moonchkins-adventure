@@ -2,8 +2,8 @@ import Activatable from "../../../ts/interface/common";
 import Component from "../component";
 
 export interface Bounds {
-  x: number,
-  y: number,
+  x?: number,
+  y?: number,
   width: number,
   height: number
 }
@@ -21,10 +21,13 @@ export class SceneCameraBoundComponent extends Component implements Activatable 
     height: Math.max(this.worldHeight, this.scene.scale.height),
   };
 
-  constructor(scene: Phaser.Scene, camera: Phaser.Cameras.Scene2D.Camera = scene.cameras.main) {
+  constructor(scene: Phaser.Scene, bounds?: Bounds, camera: Phaser.Cameras.Scene2D.Camera = scene.cameras.main) {
     super(scene);
 
     this.camera = camera;
+    if (bounds) {
+      this.bounds = bounds;
+    }
     this.activate();
   }
 
@@ -32,12 +35,10 @@ export class SceneCameraBoundComponent extends Component implements Activatable 
     this.camera.removeBounds();
   }
 
-  activate(bounds?: Bounds): void {
-    if (bounds) this.setBounds(bounds);
-
+  activate(): void {
     this.camera.setBounds(
-      this.bounds.x,
-      this.bounds.y,
+      this.bounds.x || 0,
+      this.bounds.y || 0,
       this.bounds.width,
       this.bounds.height
     );
@@ -45,6 +46,7 @@ export class SceneCameraBoundComponent extends Component implements Activatable 
 
   setBounds(bounds: Bounds): void {
     this.bounds = bounds;
+    this.activate();
   }
 }
 

@@ -32,14 +32,16 @@ module.exports = {
   'rules': {
     '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/semi': 'error',
+    '@typescript-eslint/object-curly-spacing': [2, 'always'],
+    '@typescript-eslint/indent': [2, 2, { 'SwitchCase': 1 }], // Enforce consistent indentation
 
     'semi': 'off',
     'no-unused-vars': 'off',
-    'indent': [2, 2, { 'SwitchCase': 1 }], // Enforce consistent indentation
+    'object-curly-spacing': 'off', // Enforce consistent spacing inside braces
+    'indent': 'off', // Enforce consistent indentation
     'no-multi-spaces': 0, // Disallow multiple spaces
     'no-unused-expressions': 1,// Disallow unused expressions
     'no-empty-class': 0, // Disallows empty character classes in regular expressions.
-    'object-curly-spacing': [2, 'always'], // Enforce consistent spacing inside braces
     'quotes': [0, 'single'], // Enforce the consistent use of single quotes
     'space-in-parens': [2, 'never'], // Enforce consistent spacing inside parentheses
     'no-use-before-define': 0, // Disallow the use of variables before they are defined
