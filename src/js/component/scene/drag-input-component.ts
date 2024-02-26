@@ -1,3 +1,4 @@
+import { Pinch } from "phaser3-rex-plugins/plugins/gestures";
 import Component from "../component";
 
 export interface MouseWheelListener {
@@ -18,78 +19,40 @@ export interface DragState {
 }
 
 export class SceneDragInputComponent extends Component {
-  private dragState: DragState = { active: false, prevPointer:  { x:0, y:0 } };
-
   private camera: Phaser.Cameras.Scene2D.Camera | undefined;
 
-  private pointerDownListener: Phaser.Input.InputPlugin | undefined;
-  private pointerMoveListener: Phaser.Input.InputPlugin | undefined;
-  private pointerUpListener:   Phaser.Input.InputPlugin | undefined;
-
+  private pinchListener: Pinch | undefined;
 
   constructor() {
     super();
   }
 
   deactivate(): void {
-    if (this.pointerDownListener) this.pointerDownListener.enabled = false;
-    if (this.pointerMoveListener) this.pointerMoveListener.enabled = false;
-    if (this.pointerUpListener) this.pointerUpListener.enabled = false;
+    if (this.pinchListener) this.pinchListener.setEnable(false);
   }
 
   activate(scene: Phaser.Scene): void {
     this.scene = scene;
     this.camera = this.scene.cameras.main;
 
-    this.activatePointerDown();
-    this.activatePointerMove();
-    this.activatePointerUp();
+    this.activateDrag();
   }
 
-  activatePointerMove(): void {
-    if (!this.scene) throw new Error(`Can't activate 'Pointer Move' method without scene. Please call 'activate' method first.`);
+  activateDrag(): void {
+    if (!this.scene) throw new Error(`Can't activate 'Pinch zoom' method without scene. Please call 'activate' method first.`);
 
-    if (this.pointerMoveListener){
-      this.pointerMoveListener.enabled = true;
+    if (this.pinchListener) {
+      this.pinchListener.setEnable(true);
       return;
     }
-    this.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+
+    this.pinchListener = new Pinch(this.scene);
+    this.pinchListener.on('drag1', (dragScale: { drag1Vector: { x: number, y: number }; }) => {
       if (!this.camera) return console.warn(`Drag feature disabled because the scene camera is not defined`);
 
-      if (this.dragState.active) {
-        const deltaX = this.dragState.prevPointer.x - pointer.x;
-        const deltaY = this.dragState.prevPointer.y - pointer.y;
-
-        this.camera.scrollX += deltaX / this.camera.zoom;
-        this.camera.scrollY += deltaY / this.camera.zoom;
-
-        this.dragState.prevPointer = { x: pointer.x, y: pointer.y };
-      }
-    });
-  }
-
-  activatePointerUp(): void {
-    if (!this.scene) throw new Error(`Can't activate 'Pointer Up' method without scene. Please call 'activate' method first.`);
-
-    if (this.pointerUpListener){
-      this.pointerUpListener.enabled = true;
-      return;
-    }
-    this.scene.input.on('pointerup', () => {
-      this.dragState.active = false;
-    });
-  }
-
-  activatePointerDown(): void {
-    if (!this.scene) throw new Error(`Can't activate 'Pointer Down' method without scene. Please call 'activate' method first.`);
-
-    if (this.pointerDownListener){
-      this.pointerDownListener.enabled = true;
-      return;
-    }
-    this.scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-      this.dragState.active = true;
-      this.dragState.prevPointer = { x: pointer.x, y: pointer.y };
+      const drag1Vector = dragScale.drag1Vector;
+      this.camera.scrollX -= drag1Vector.x / this.camera.zoom;
+      this.camera.scrollY -= drag1Vector.y / this.camera.zoom;
     });
   }
 }

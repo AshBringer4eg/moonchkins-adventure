@@ -46,7 +46,13 @@ export class SceneZoomInputComponent extends Component {
     this.pinchListener.on('pinch', (pinch: { scaleFactor: number; }) => {
       if (!this.camera) return console.warn(`Pinch zoom feature disabled because the scene camera is not defined`);
       const scaleFactor = pinch.scaleFactor;
-      this.camera.zoom *= scaleFactor;
+      const { max, min } = this.zoomState;
+
+      if (this.camera.zoom === max && scaleFactor > 1) return;
+      if (this.camera.zoom === min && scaleFactor < 1) return;
+
+      this.camera.zoom = Phaser.Math.Clamp(this.camera.zoom * scaleFactor, min, max);
+
     });
   }
 
