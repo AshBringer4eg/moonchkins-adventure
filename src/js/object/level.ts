@@ -25,12 +25,14 @@ export default class Level {
     this.rowCount = rowCount || this.rowCount;
     this.colCount = colCount || this.colCount;
 
+
     // Initialize battlefield with empty tiles
     this.playground = [];
     for (let row = 0; row < this.rowCount; row++) {
       this.playground.push([]);
       for (let col = 0; col < this.colCount; col++) {
         const room = new Room(this, { row, col });
+        //      ^?
         if (row === Math.floor(this.rowCount/2) && col === Math.floor(this.colCount/2)) {
           room.initAsStartTile();
         }

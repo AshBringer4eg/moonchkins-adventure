@@ -1,4 +1,4 @@
-import Activatable from "../../../ts/interface/common";
+import Activatable, { Direction } from "../../../ts/interface/common";
 import Component from "../component";
 
 export interface MouseWheelListener {
@@ -17,20 +17,33 @@ export interface ZoomState {
   target: number
 }
 
-const CAMERA_ZOOM_TIME = 100;
+export interface ZoomInputComponentOptions {
+  stickyZoom: boolean
+}
 
+
+const CAMERA_ZOOM_TIME = 200;
+
+/* TODO: Add this logic here
+https://github.com/rexrainbow/phaser3-rex-notes/blob/master/plugins/input/gestures/pinch/Pinch.js
+https://github.com/rexrainbow/phaser3-rex-notes/blob/master/plugins/input/gestures/twopointerstracer/TwoPointersTracer.js
+
+*/
 export class SceneZoomInputComponent extends Component implements Activatable {
-  private zoomState: ZoomState = { min: 1, max: 1.5, step: 0.25, target: 1.5 };
-
+  private zoomState: ZoomState = { min: 1, max: 2.5, step: 0.5, target: 1.5 };
+  private options: ZoomInputComponentOptions = { stickyZoom: false };
   private camera: Phaser.Cameras.Scene2D.Camera;
 
   private wheelListener: Phaser.Input.InputPlugin | undefined;
 
-  constructor(scene: Phaser.Scene, zoomState?: ZoomState, camera: Phaser.Cameras.Scene2D.Camera = scene.cameras.main) {
+  public proleaded: boolean = false;
+
+  constructor(scene: Phaser.Scene, options?: ZoomInputComponentOptions, zoomState?: ZoomState, camera: Phaser.Cameras.Scene2D.Camera = scene.cameras.main) {
     super(scene);
 
     this.camera = camera;
     if (zoomState) this.setZoomState(zoomState);
+    if (options) this.options = options;
 
     this.camera.zoomTo(this.zoomState.target, CAMERA_ZOOM_TIME);
     this.activate();
@@ -64,11 +77,14 @@ export class SceneZoomInputComponent extends Component implements Activatable {
 
         this.zoomState.target = newZoom;
         this.camera.zoomTo(newZoom, CAMERA_ZOOM_TIME);
-        this.camera.pan(pointer.x, pointer.y, CAMERA_ZOOM_TIME);
 
-        console.log(JSON.stringify(this.zoomState));
+        if (this.options.stickyZoom) this.camera.pan(pointer.worldX, pointer.worldY, CAMERA_ZOOM_TIME);
       }
     );
+  }
+
+  setOptions(options: ZoomInputComponentOptions): void {
+    this.options = options;
   }
 
   setZoomState(zoomState: Partial<ZoomState>): void {
@@ -80,6 +96,37 @@ export class SceneZoomInputComponent extends Component implements Activatable {
     if (min > max) min = max;
 
     this.zoomState = { min, max, step, target };
+  }
+
+  getZoomVectorDirection(pointer: Phaser.Input.Pointer): Direction {
+    const blockSizeX = this.camera.width / 3;
+    const blockSizeY = this.camera.height / 3;
+
+    if (pointer.x <= blockSizeX) {
+      if (pointer.y < blockSizeY) {
+        return Direction.TOP_LEFT; // ⇖
+      } else if (pointer.y  <= 2 * blockSizeY){
+        return Direction.LEFT; // ⇐
+      } else {
+        return Direction.BOTTOM_LEFT; // ⇙
+      }
+    } else if (pointer.x <= 2 * blockSizeX) {
+      if (pointer.y < blockSizeY) {
+        return Direction.TOP; // ⇑
+      } else if (pointer.y  <= 2 * blockSizeY){
+        return Direction.CENTER; // ↺
+      } else {
+        return Direction.BOTTOM; // ⇓
+      }
+    } else {
+      if (pointer.y < blockSizeY) {
+        return Direction.TOP_RIGHT; // ⇗
+      } else if (pointer.y  <= 2 * blockSizeY){
+        return Direction.RIGHT; // ⇒
+      } else {
+        return Direction.BOTTOM_RIGHT; // ⇘
+      }
+    }
   }
 }
 

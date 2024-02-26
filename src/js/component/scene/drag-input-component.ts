@@ -58,8 +58,8 @@ export class SceneDragInputComponent extends Component implements Activatable {
         const deltaX = this.dragState.prevPointer.x - pointer.x;
         const deltaY = this.dragState.prevPointer.y - pointer.y;
 
-        this.camera.scrollX += deltaX;
-        this.camera.scrollY += deltaY;
+        this.camera.scrollX += deltaX / this.camera.zoom;
+        this.camera.scrollY += deltaY / this.camera.zoom;
 
         this.dragState.prevPointer = { x: pointer.x, y: pointer.y };
       }
@@ -71,8 +71,9 @@ export class SceneDragInputComponent extends Component implements Activatable {
       this.pointerUpListener.enabled = true;
       return;
     }
-    this.scene.input.on('pointerup', () => {
+    this.scene.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
       this.dragState.active = false;
+      console.log('POINTERUP: ' + pointer.id);
     });
   }
 
@@ -84,6 +85,7 @@ export class SceneDragInputComponent extends Component implements Activatable {
     this.scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
       this.dragState.active = true;
       this.dragState.prevPointer = { x: pointer.x, y: pointer.y };
+      console.log('POINTERDOWN: ' + pointer.id);
     });
   }
 }

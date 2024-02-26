@@ -1,3 +1,4 @@
+import { config } from "../../../config/config";
 import Activatable from "../../../ts/interface/common";
 import Component from "../component";
 
@@ -11,8 +12,8 @@ export interface Bounds {
 export class SceneCameraBoundComponent extends Component implements Activatable {
   private camera: Phaser.Cameras.Scene2D.Camera;
 
-  private worldWidth = globalThis.config.width;
-  private worldHeight = globalThis.config.height;
+  private worldWidth = config.width;
+  private worldHeight = config.height;
 
   private bounds: Bounds = {
     x: 0,

@@ -1,9 +1,10 @@
 import Phaser from 'phaser';
 import TestScene from './test';
-import WebFontFile from '../config/web-font-loader';
+import WebFontFile from '../../config/web-font-loader';
 import MenuScene from './menu';
 import SceneCameraBoundComponent from '../component/scene/camera-bounds-component';
 import { Background, Tile } from '../../ts/enums/scene/scene';
+import { config } from '../../config/config';
 
 export default class LoaderScene extends Phaser.Scene {
   private stage: string = 'loader class...';
@@ -27,7 +28,7 @@ export default class LoaderScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     setTimeout(() => {
-      if (globalThis.config.debug){
+      if (config.debug){
         return this.scene.start(TestScene.name);
       }
       return this.scene.start(MenuScene.name);
@@ -48,13 +49,10 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   loadImages(): void {
+    this.stage = 'images';
     this.load.image(Background.GRID, 'assets/background/grid.jpg');
-
     this.load.image(Tile.ROOM_UNDISCOVERED, 'assets/tiles/room/room_undiscovered.png');
     this.load.image(Tile.ROOM_START, 'assets/tiles/room/room_4.png');
-
-
-    this.stage = 'images';
   }
 
   loadFonts(): void {

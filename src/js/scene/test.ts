@@ -22,7 +22,7 @@ export default class TestScene extends Phaser.Scene {
       height = Number(this.sys.game.config.height);
     this.add.image(width/2, height/2, Background.GRID).setDisplaySize(width, height);
 
-    this.level = new Level(this, 16, 11);
+    this.level = new Level(this, 15, 11);
 
     this.zoomComponent = new SceneZoomInputComponent(this);
     this.dragComponent = new SceneDragInputComponent(this);

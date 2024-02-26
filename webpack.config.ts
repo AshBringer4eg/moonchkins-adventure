@@ -45,6 +45,11 @@ module.exports = {
           to: './dist/[path][name][ext]',
           context: './src/',
         },
+        {
+          from: 'third_party/**/*.*',
+          to: './dist/[path][name][ext]',
+          context: './',
+        },
       ],
     }),
   ],

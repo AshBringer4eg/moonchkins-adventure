@@ -1,24 +1,22 @@
 import '../scss/main.scss';
 
-import initializeApplicationConfiguration from './config/config';
 import TestScene from './scene/test';
 import LoaderScene from './scene/loader';
 import MenuScene from './scene/menu';
-
-initializeApplicationConfiguration();
+import { config } from '../config/config';
 
 const gameConfig = {
-  type: Phaser.CANVAS,
-  width: globalThis.config.width,
-  height: globalThis.config.height,
+  type: Phaser.AUTO,
+  width: config.width,
+  height: config.height,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   render: {
-    pixelArt: true,
-    antialias: false,
-    antialiasGL: false,
+    pixelArt: false,
+    antialias: true,
+    antialiasGL: true,
   },
   physics: {
     default: 'arcade',
@@ -35,6 +33,6 @@ const gameConfig = {
 };
 
 window.addEventListener('load', () => {
-  globalThis.game = new Phaser.Game(gameConfig);
-  globalThis.game.scene.start(LoaderScene.name);
+  const game = new Phaser.Game(gameConfig);
+  game.scene.start(LoaderScene.name);
 });
