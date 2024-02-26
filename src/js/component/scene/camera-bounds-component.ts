@@ -1,16 +1,10 @@
 import { config } from "../../../config/config";
-import Activatable from "../../../ts/interface/common";
+import { Bounds } from "../../../ts/interface/component/camera-bound-component";
 import Component from "../component";
 
-export interface Bounds {
-  x?: number,
-  y?: number,
-  width: number,
-  height: number
-}
 
-export class SceneCameraBoundComponent extends Component implements Activatable {
-  private camera: Phaser.Cameras.Scene2D.Camera;
+export class SceneCameraBoundComponent extends Component {
+  private camera: Phaser.Cameras.Scene2D.Camera | undefined;
 
   private worldWidth = config.width;
   private worldHeight = config.height;
@@ -18,25 +12,30 @@ export class SceneCameraBoundComponent extends Component implements Activatable 
   private bounds: Bounds = {
     x: 0,
     y: 0,
-    width: Math.max(this.worldWidth, this.scene.scale.width),
-    height: Math.max(this.worldHeight, this.scene.scale.height),
+    width: Math.max(this.worldWidth),
+    height: Math.max(this.worldHeight),
   };
 
-  constructor(scene: Phaser.Scene, bounds?: Bounds, camera: Phaser.Cameras.Scene2D.Camera = scene.cameras.main) {
-    super(scene);
+  constructor(bounds?: Bounds) {
+    super();
 
-    this.camera = camera;
     if (bounds) {
       this.bounds = bounds;
     }
-    this.activate();
   }
 
   deactivate(): void {
-    this.camera.removeBounds();
+    if (this.camera) this.camera.removeBounds();
   }
 
-  activate(): void {
+  activate(scene: Phaser.Scene, bounds?: Bounds): void {
+    this.scene = scene;
+    this.camera = this.scene.cameras.main;
+
+    if (bounds) {
+      this.bounds = bounds;
+    }
+
     this.camera.setBounds(
       this.bounds.x || 0,
       this.bounds.y || 0,
@@ -46,8 +45,10 @@ export class SceneCameraBoundComponent extends Component implements Activatable 
   }
 
   setBounds(bounds: Bounds): void {
+    if (!this.scene) throw new Error(`Can't activate 'Set Bounds' method without scene. Please call 'activate' method first.`);
+
     this.bounds = bounds;
-    this.activate();
+    this.activate(this.scene);
   }
 }
 

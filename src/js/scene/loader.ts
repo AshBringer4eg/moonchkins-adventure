@@ -2,14 +2,14 @@ import Phaser from 'phaser';
 import TestScene from './test';
 import WebFontFile from '../../config/web-font-loader';
 import MenuScene from './menu';
-import SceneCameraBoundComponent from '../component/scene/camera-bounds-component';
+// import SceneCameraBoundComponent from '../component/scene/camera-bounds-component';
 import { Background, Tile } from '../../ts/enums/scene/scene';
 import { config } from '../../config/config';
 
 export default class LoaderScene extends Phaser.Scene {
   private stage: string = 'loader class...';
 
-  private cameraBoundComponent: SceneCameraBoundComponent | undefined;
+  // private cameraBoundComponent: SceneCameraBoundComponent | undefined;
 
   constructor() {
     super({ key: LoaderScene.name, active: false, visible: false });
@@ -17,7 +17,7 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   create() {
-    this.cameraBoundComponent = new SceneCameraBoundComponent(this);
+    // this.cameraBoundComponent = new SceneCameraBoundComponent(this);
 
     const screenCenterX = this.cameras.main.centerX;
     const screenCenterY = this.cameras.main.centerY;

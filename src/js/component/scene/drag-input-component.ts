@@ -1,5 +1,3 @@
-
-import Activatable from "../../../ts/interface/common";
 import Component from "../component";
 
 export interface MouseWheelListener {
@@ -19,21 +17,18 @@ export interface DragState {
   }
 }
 
-export class SceneDragInputComponent extends Component implements Activatable {
+export class SceneDragInputComponent extends Component {
   private dragState: DragState = { active: false, prevPointer:  { x:0, y:0 } };
 
-  private camera: Phaser.Cameras.Scene2D.Camera;
+  private camera: Phaser.Cameras.Scene2D.Camera | undefined;
 
   private pointerDownListener: Phaser.Input.InputPlugin | undefined;
   private pointerMoveListener: Phaser.Input.InputPlugin | undefined;
   private pointerUpListener:   Phaser.Input.InputPlugin | undefined;
 
 
-  constructor(scene: Phaser.Scene, camera: Phaser.Cameras.Scene2D.Camera = scene.cameras.main) {
-    super(scene);
-
-    this.camera = camera;
-    this.activate();
+  constructor() {
+    super();
   }
 
   deactivate(): void {
@@ -42,18 +37,25 @@ export class SceneDragInputComponent extends Component implements Activatable {
     if (this.pointerUpListener) this.pointerUpListener.enabled = false;
   }
 
-  activate(): void {
+  activate(scene: Phaser.Scene): void {
+    this.scene = scene;
+    this.camera = this.scene.cameras.main;
+
     this.activatePointerDown();
     this.activatePointerMove();
     this.activatePointerUp();
   }
 
   activatePointerMove(): void {
+    if (!this.scene) throw new Error(`Can't activate 'Pointer Move' method without scene. Please call 'activate' method first.`);
+
     if (this.pointerMoveListener){
       this.pointerMoveListener.enabled = true;
       return;
     }
     this.scene.input.on('pointermove', (pointer: Phaser.Input.Pointer) => {
+      if (!this.camera) return console.warn(`Drag feature disabled because the scene camera is not defined`);
+
       if (this.dragState.active) {
         const deltaX = this.dragState.prevPointer.x - pointer.x;
         const deltaY = this.dragState.prevPointer.y - pointer.y;
@@ -67,17 +69,20 @@ export class SceneDragInputComponent extends Component implements Activatable {
   }
 
   activatePointerUp(): void {
+    if (!this.scene) throw new Error(`Can't activate 'Pointer Up' method without scene. Please call 'activate' method first.`);
+
     if (this.pointerUpListener){
       this.pointerUpListener.enabled = true;
       return;
     }
-    this.scene.input.on('pointerup', (pointer: Phaser.Input.Pointer) => {
+    this.scene.input.on('pointerup', () => {
       this.dragState.active = false;
-      console.log('POINTERUP: ' + pointer.id);
     });
   }
 
   activatePointerDown(): void {
+    if (!this.scene) throw new Error(`Can't activate 'Pointer Down' method without scene. Please call 'activate' method first.`);
+
     if (this.pointerDownListener){
       this.pointerDownListener.enabled = true;
       return;
@@ -85,7 +90,6 @@ export class SceneDragInputComponent extends Component implements Activatable {
     this.scene.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
       this.dragState.active = true;
       this.dragState.prevPointer = { x: pointer.x, y: pointer.y };
-      console.log('POINTERDOWN: ' + pointer.id);
     });
   }
 }

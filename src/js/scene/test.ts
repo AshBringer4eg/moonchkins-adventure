@@ -1,15 +1,15 @@
 import Phaser from 'phaser';
 import { Background } from '../../ts/enums/scene/scene';
-import SceneCameraBoundComponent from '../component/scene/camera-bounds-component';
-import SceneDragInputComponent from '../component/scene/drag-input-component';
 import SceneZoomInputComponent from '../component/scene/zoom-input-component';
 import Level from '../object/level';
+import SceneCameraBoundComponent from '../component/scene/camera-bounds-component';
 import { DEFAULT_TILE_HEIGHT, DEFAULT_TILE_WIDTH } from '../object/room';
+import SceneDragInputComponent from '../component/scene/drag-input-component';
 
 export default class TestScene extends Phaser.Scene {
-  private zoomComponent: SceneZoomInputComponent | undefined;
-  private dragComponent: SceneDragInputComponent | undefined;
-  private cameraBoundComponent: SceneCameraBoundComponent | undefined;
+  private zoomComponent: SceneZoomInputComponent = new SceneZoomInputComponent();
+  private cameraBoundComponent: SceneCameraBoundComponent = new SceneCameraBoundComponent();
+  private dragComponent: SceneDragInputComponent = new SceneDragInputComponent();
 
   private level: Level | null = null;
 
@@ -24,9 +24,9 @@ export default class TestScene extends Phaser.Scene {
 
     this.level = new Level(this, 15, 11);
 
-    this.zoomComponent = new SceneZoomInputComponent(this);
-    this.dragComponent = new SceneDragInputComponent(this);
-    this.cameraBoundComponent = new SceneCameraBoundComponent(this, {
+    this.zoomComponent.activate(this);
+    this.dragComponent.activate(this);
+    this.cameraBoundComponent.activate(this,{
       width: DEFAULT_TILE_WIDTH * this.level.rowCount,
       height: DEFAULT_TILE_HEIGHT * this.level.colCount,
     });

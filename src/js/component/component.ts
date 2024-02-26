@@ -1,12 +1,16 @@
-import Activatable from "../../ts/interface/common";
+interface Activatable {
+  activate(scene: Phaser.Scene): void
+  deactivate(): void
+  preload?(): void
+}
 
 export class Component implements Activatable {
-  protected scene: Phaser.Scene;
+  protected scene: Phaser.Scene | undefined;
 
-  constructor(scene: Phaser.Scene) {
-    this.scene = scene;
+  constructor() {
   }
-  activate(): void {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  activate(scene: Phaser.Scene): void {
     throw new Error("Method not implemented.");
   }
   deactivate(): void {
