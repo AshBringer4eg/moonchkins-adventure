@@ -3,7 +3,7 @@ import TestScene from './test';
 import WebFontFile from '../../config/web-font-loader';
 import MenuScene from './menu';
 // import SceneCameraBoundComponent from '../component/scene/camera-bounds-component';
-import { Background, Tile } from '../../ts/enums/scene/scene';
+import { Background, Monster, Objects, Tile } from '../../ts/enums/scene/scene';
 import { config } from '../../config/config';
 
 export default class LoaderScene extends Phaser.Scene {
@@ -52,7 +52,11 @@ export default class LoaderScene extends Phaser.Scene {
     this.stage = 'images';
     this.load.image(Background.GRID, 'assets/background/grid.jpg');
     this.load.image(Tile.ROOM_UNDISCOVERED, 'assets/tiles/room/room_undiscovered.png');
-    this.load.image(Tile.ROOM_START, 'assets/tiles/room/room_4.png');
+    this.load.image(Tile.ROOM, 'assets/tiles/room/room.png');
+    this.load.image(Tile.HOLE, 'assets/tiles/room/part/hole.png');
+    this.load.image(Objects.CHEST, 'assets/tiles/object/chest.png');
+    this.load.image(Objects.DOOR, 'assets/tiles/object/door.png');
+    this.load.image(Monster.MONSTER, 'assets/tiles/object/monster.png');
   }
 
   loadFonts(): void {

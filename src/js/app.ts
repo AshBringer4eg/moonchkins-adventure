@@ -10,8 +10,8 @@ const gameConfig = {
   width: config.width,
   height: config.height,
   scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
+    mode: Phaser.Scale.RESIZE,
+    // autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   render: {
     pixelArt: false,

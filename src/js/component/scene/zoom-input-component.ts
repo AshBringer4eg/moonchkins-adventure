@@ -2,11 +2,13 @@ import { Pinch } from 'phaser3-rex-plugins/plugins/gestures.js';
 
 import { ZoomInputComponentOptions, ZoomState } from "../../../ts/interface/component/zoom-input-component";
 import Component from "../component";
+import { config } from '../../../config/config';
+import Room from '../../object/room';
 
 const CAMERA_ZOOM_TIME = 200;
 
 export class SceneZoomInputComponent extends Component {
-  private zoomState: ZoomState = { min: 1, max: 2.5, step: 0.5, target: 1.5 };
+  private zoomState: ZoomState = { min: 1, max: 3, step: 0.5, target: 1.5 };
   private options: ZoomInputComponentOptions = { stickyZoom: false };
   private camera: Phaser.Cameras.Scene2D.Camera | undefined;
 
@@ -28,7 +30,8 @@ export class SceneZoomInputComponent extends Component {
   activate(scene: Phaser.Scene): void {
     this.scene = scene;
     this.camera = scene.cameras.main;
-    this.camera.zoomTo(this.zoomState.target, CAMERA_ZOOM_TIME);
+    this.camera.zoomTo(this.zoomState.target, 0);
+    this.camera.pan(config.width / 2, config.height / 2, 0);
 
     this.activateWheelZoom();
     this.activatePinchZoom();
@@ -91,6 +94,7 @@ export class SceneZoomInputComponent extends Component {
   }
 
   setZoomState(zoomState: Partial<ZoomState>): void {
+    if (!this.camera) throw new Error(`Can't zoom without camera`);
     let { min, max, step, target } = zoomState;
     if (!min) min = this.zoomState.min || 1;
     if (!max) max = this.zoomState.max || 1;
@@ -99,6 +103,18 @@ export class SceneZoomInputComponent extends Component {
     if (min > max) min = max;
 
     this.zoomState = { min, max, step, target };
+  }
+
+  zoomToCoordinates(x: number, y: number, zoom: number = this.zoomState.target, duration: number = CAMERA_ZOOM_TIME) {
+    if (!this.camera) throw new Error(`Can't zoom without camera`);
+    this.setZoomState({ target: zoom });
+    this.camera.zoomTo(zoom, duration, 'Linear', true);
+    this.camera.pan(x, y, duration, 'Linear', true);
+  }
+
+  zoomToRoom({ position, width, height }: Room) {
+    if (!this.camera) throw new Error(`Can't zoom without camera`);
+    this.zoomToCoordinates(position.x + width / 2, position.y + height / 2);
   }
 }
 

@@ -20,7 +20,7 @@ export default class TestScene extends Phaser.Scene {
   create() {
     const width = Number(this.sys.game.config.width),
       height = Number(this.sys.game.config.height);
-    this.add.image(width/2, height/2, Background.GRID).setDisplaySize(width, height);
+    this.add.image(width / 2, height / 2, Background.GRID).setDisplaySize(width, height);
 
     this.level = new Level(this, 15, 11);
 
@@ -30,6 +30,9 @@ export default class TestScene extends Phaser.Scene {
       width: DEFAULT_TILE_WIDTH * this.level.rowCount,
       height: DEFAULT_TILE_HEIGHT * this.level.colCount,
     });
+
+    const startRoom = this.level.getStarterRoom();
+    if (startRoom) this.zoomComponent.zoomToRoom(startRoom);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

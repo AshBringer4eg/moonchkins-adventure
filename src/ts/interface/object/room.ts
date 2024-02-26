@@ -1,4 +1,6 @@
 export interface RoomPosition {
   row: number,
-  col: number
+  col: number,
+  x: number,
+  y: number
 }

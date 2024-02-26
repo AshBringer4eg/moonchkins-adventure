@@ -12,6 +12,7 @@ export default class Level {
   public scene: Phaser.Scene;
   public rowCount: number = 11;
   public colCount: number = 11;
+  public startRoom: Room | undefined;
 
   /**
    * Creates an instance of Level and fills  the playground array with empty Rooms + start tuile in the center.
@@ -32,12 +33,15 @@ export default class Level {
       this.playground.push([]);
       for (let col = 0; col < this.colCount; col++) {
         const room = new Room(this, { row, col });
-        //      ^?
-        if (row === Math.floor(this.rowCount/2) && col === Math.floor(this.colCount/2)) {
-          room.initAsStartTile();
+        if (row === Math.floor(this.rowCount / 2) && col === Math.floor(this.colCount / 2)) {
+          this.startRoom = room.initAsStartTile();
         }
         this.playground[row].push(room);
       }
     }
+  }
+
+  getStarterRoom(): Room | undefined {
+    return this.startRoom;
   }
 }
