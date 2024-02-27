@@ -1,4 +1,5 @@
 import '../scss/main.scss';
+import "@total-typescript/ts-reset";
 
 import TestScene from './scene/test';
 import LoaderScene from './scene/loader';
