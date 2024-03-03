@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
-import { Background } from '../../ts/enums/scene/scene';
+import SceneCameraBoundComponent from '../component/scene/camera-bounds-component';
+import SceneDragInputComponent from '../component/scene/drag-input-component';
 import SceneZoomInputComponent from '../component/scene/zoom-input-component';
 import Level from '../object/level';
-import SceneCameraBoundComponent from '../component/scene/camera-bounds-component';
-import { DEFAULT_TILE_HEIGHT, DEFAULT_TILE_WIDTH } from '../object/room';
-import SceneDragInputComponent from '../component/scene/drag-input-component';
+import { ROOM_HEIGHT, ROOM_WIDTH } from '../object/_const';
+import { Background } from '../../type/enums/image';
 
 export default class TestScene extends Phaser.Scene {
   private zoomComponent: SceneZoomInputComponent = new SceneZoomInputComponent();
@@ -27,11 +27,11 @@ export default class TestScene extends Phaser.Scene {
     this.zoomComponent.activate(this);
     this.dragComponent.activate(this);
     this.cameraBoundComponent.activate(this,{
-      width: DEFAULT_TILE_WIDTH * this.level.rowCount,
-      height: DEFAULT_TILE_HEIGHT * this.level.colCount,
+      width: ROOM_WIDTH * this.level.rowCount,
+      height: ROOM_HEIGHT * this.level.colCount,
     });
 
-    const startRoom = this.level.getStarterRoom();
+    const startRoom = this.level.getStartingRoom();
     if (startRoom) this.zoomComponent.zoomToRoom(startRoom);
   }
 

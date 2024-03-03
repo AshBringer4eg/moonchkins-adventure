@@ -1,4 +1,4 @@
-import { Config, Resolutions } from '../ts/config';
+import { Config, Resolutions } from '../type/config';
 
 const Resolutions: Resolutions = {
   HighDefinition: {

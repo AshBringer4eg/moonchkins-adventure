@@ -3,8 +3,8 @@ import TestScene from './test';
 import WebFontFile from '../../config/web-font-loader';
 import MenuScene from './menu';
 // import SceneCameraBoundComponent from '../component/scene/camera-bounds-component';
-import { Background, Monster, Objects, Tile } from '../../ts/enums/scene/scene';
 import { config } from '../../config/config';
+import { Background, Monster, Objects, Tile } from '../../type/enums/image';
 
 export default class LoaderScene extends Phaser.Scene {
   private stage: string = 'loader class...';

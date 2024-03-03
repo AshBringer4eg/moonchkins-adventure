@@ -1,5 +1,5 @@
 import { config } from "../../../config/config";
-import { Bounds } from "../../../ts/interface/component/camera-bound-component";
+import { Bounds } from "../../../type/interface/component/camera-bound-component";
 import Component from "../component";
 
 

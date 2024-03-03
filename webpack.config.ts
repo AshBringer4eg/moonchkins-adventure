@@ -5,7 +5,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 module.exports = {
   mode: 'development',
   // mode: 'production',
-  entry: './src/js/app.ts',
+  entry: './src/app.ts',
   devtool: 'inline-source-map',
   module: {
     rules: [

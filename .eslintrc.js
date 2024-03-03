@@ -35,6 +35,7 @@ module.exports = {
     '@typescript-eslint/object-curly-spacing': [2, 'always'],
     '@typescript-eslint/indent': [2, 2, { 'SwitchCase': 1 }], // Enforce consistent indentation
     '@typescript-eslint/space-infix-ops': ["error", { "int32Hint": true }],
+    "@typescript-eslint/no-namespace": "off",
 
     'space-infix-ops': 'off',
     'semi': 'off',

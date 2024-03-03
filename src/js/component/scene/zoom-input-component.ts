@@ -1,6 +1,6 @@
 import { Pinch } from 'phaser3-rex-plugins/plugins/gestures.js';
 
-import { ZoomInputComponentOptions, ZoomState } from "../../../ts/interface/component/zoom-input-component";
+import { ZoomInputComponentOptions, ZoomState } from "../../../type/interface/component/zoom-input-component";
 import Component from "../component";
 import { config } from '../../../config/config';
 import Room from '../../object/room';
