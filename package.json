@@ -5,10 +5,9 @@
   "main": "src/app.js",
   "homepage": "./",
   "scripts": {
-    "build": "webpack --mode production",
     "build-watch": "webpack --watch",
-    "start": "webpack serve --mode development",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode production",
+    "start": "webpack serve --mode development"
   },
   "author": "",
   "license": "ISC",

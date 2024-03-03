@@ -2,16 +2,15 @@ import { Door } from ".";
 import { Color } from "../../../type/enums/entity";
 
 export const addHoverHandler = (door: Door) => {
-  door.coverImage.on('pointerover', () => {
-    door.coverImage.setTint(Color.GREEN);
+  door.getInteractiveControll().on('pointerover', () => {
+    if (door.room.active) door.tint(Color.GREEN);
   });
 
-  door.coverImage.on('pointerout', () => {
-    door.coverImage.clearTint();
+  door.getInteractiveControll().on('pointerout', () => {
+    if (door.room.active) door.tint();
   });
 
-  door.coverImage.on('pointerdown', () => {
-    door.adjacentRoom.initAsRandomRoom();
+  door.getInteractiveControll().on('pointerdown', () => {
+    if (door.room.active) door.goToAdjacentRoom();
   });
-  //getOppositDirection
 };

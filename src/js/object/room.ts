@@ -6,11 +6,15 @@ import { Door } from './door';
 import Level from './level';
 import { Compass, CompassMainAxis } from '../utility/compas';
 import { config } from '../../config/config';
+import { Color } from '../../type/enums/entity';
+import { objectKeys } from '../utility/utils';
 
 const doorsPlaces = [CompassMainAxis.NORTH, CompassMainAxis.EAST, CompassMainAxis.SOUTH, CompassMainAxis.WEST] as const;
 
 export default class Room {
   public uuid: string = v4();
+
+  #active: boolean = false;
 
   private coverImage: Phaser.GameObjects.Image;
   private debugName: Phaser.GameObjects.Text | undefined;
@@ -28,7 +32,7 @@ export default class Room {
     [CompassMainAxis.WEST]: undefined,
   };
 
-  constructor(level: Level, position: PositionOnGrid){
+  constructor(level: Level, position: PositionOnGrid) {
     this.level = level;
     this.position = {
       col: position.col,
@@ -45,14 +49,43 @@ export default class Room {
     }
   }
 
+  set active(value: boolean) {
+    this.#active = value;
+    if (value) {
+      this.tint();
+    } else {
+      this.tint(Color.BLACK);
+    }
+  }
+
+  /*
+    GETTERS & SETTER
+  */
+  get active() {
+    return this.#active;
+  }
+
+  /*
+    ACTION METHODS
+  */
+
+  enterRoom(previousRoom: Room) {
+    previousRoom.active = false;
+    this.active = true;
+    if (!this.discovered) this.initAsRandomRoom();
+  }
+
+  /*
+    INITIALIZATION
+  */
   init() {
     this.discovered = true;
   }
 
   initAsStartRoom(): Room {
-    if (this.discovered) return this;
     this.init();
 
+    this.active = true;
     this.coverImage = this.prepareCoverImage(Tile.ROOM);
     doorsPlaces.forEach(direction => {
       const adjacentRoom = this.getNeighbourRoom(direction);
@@ -68,16 +101,6 @@ export default class Room {
     if (this.discovered) return this;
     this.init();
 
-    // Init DOOR that used to enter this room
-    // const adjacentRoom = this.getNeighbourRoom(entranceDirection);
-    // if (adjacentRoom) { // Have to be always true
-    // this.doors[entranceDirection] = new Door(this, adjacentRoom, entranceDirection);
-    // console.log(`Door created: ${entranceDirection}`);
-    // console.log(this.doors[entranceDirection]);
-    // } else { // Something exciting and terrible happened
-    //   throw new Error(`Are you just enter this room out of nowhere?`);
-    // }
-
     // Generate tile and floor
     this.coverImage = this.prepareCoverImage(Tile.ROOM);
 
@@ -91,17 +114,29 @@ export default class Room {
       if (adjacentRoom.discovered) {  // Generate door if we have discovered room on the other side
         if (adjacentRoom.doors[Compass.getOppositDirectionMain(direction)]) { // and on the other side we have a door
           this.doors[direction] = new Door(this, adjacentRoom, direction);
-          console.log(`Door created: ${direction}`);
-          console.log(this.doors[direction]);
         }
       }  else if (Math.random() > 0.3) { // Try to generate random door
         this.doors[direction] = new Door(this, adjacentRoom, direction);
-        console.log(`Door created: ${direction}`);
-        console.log(this.doors[direction]);
       }
     });
 
     return this;
+  }
+
+  /*
+    SERVICE METHODS
+  */
+
+  tint(color?: Color) {
+    if (!color) {
+      this.coverImage.clearTint();
+    } else {
+      this.coverImage.setTint(color);
+    }
+    for (const key of objectKeys(this.doors)) {
+      const door = this.doors[key];
+      if (door) door.tint(color);
+    }
   }
 
   prepareCoverImage(tileName: Tile): Phaser.GameObjects.Image {

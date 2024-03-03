@@ -5,14 +5,15 @@ import Room from "../room";
 import { Objects } from '../../../type/enums/image';
 import { addHoverHandler } from "./handler";
 import { CompassMainAxis } from "../../utility/compas";
+import { Color } from "../../../type/enums/entity";
 
 export class Door {
   public uuid: string = v4();
 
   private scene: Phaser.Scene;
+  private coverImage: Phaser.GameObjects.Image;
 
   // Is it have to be private?
-  public coverImage: Phaser.GameObjects.Image;
   public position: PositionCoordinates;
   public room: Room;
   public adjacentRoom: Room;
@@ -29,6 +30,9 @@ export class Door {
     addHoverHandler(this);
   }
 
+  /*
+    GETTERS & SETTERS
+  */
   getInteractiveControll() {
     return this.coverImage;
   }
@@ -65,6 +69,26 @@ export class Door {
     }
   }
 
+
+  /*
+    ACTION FUNCTIONS
+  */
+
+  goToAdjacentRoom() {
+    this.adjacentRoom.enterRoom(this.room);
+  }
+
+  /*
+    SERVICE FUNCTIONS
+  */
+
+  tint(color?: Color) {
+    if (color) {
+      this.coverImage.setTint(color);
+    } else {
+      this.coverImage.clearTint();
+    }
+  }
   prepareCoverImage(tileName: Objects): Phaser.GameObjects.Image {
     const image = this.scene.add.image(this.position.x + Math.random(), this.position.y, tileName)
       .setDisplaySize(DOOR_WIDTH, DOOR_HEIGHT);
