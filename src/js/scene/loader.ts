@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import TestScene from './test';
+import GameScene from './test';
 import WebFontFile from '../../config/web-font-loader';
 import MenuScene from './menu';
 // import SceneCameraBoundComponent from '../component/scene/camera-bounds-component';
@@ -29,7 +29,7 @@ export default class LoaderScene extends Phaser.Scene {
 
     setTimeout(() => {
       if (config.debug){
-        return this.scene.start(TestScene.name);
+        return this.scene.start(GameScene.name);
       }
       return this.scene.start(MenuScene.name);
     }, 1);
@@ -50,7 +50,9 @@ export default class LoaderScene extends Phaser.Scene {
 
   loadImages(): void {
     this.stage = 'images';
-    this.load.image(Background.GRID, 'assets/background/grid.jpg');
+    this.load.image(Background.BG_GRID, 'assets/background/grid.jpg');
+    this.load.image(Background.BG_SCROLL, 'assets/background/paper-scroll.png');
+
     this.load.image(Tile.ROOM_UNDISCOVERED, 'assets/tiles/room/room_undiscovered.png');
     this.load.image(Tile.ROOM, 'assets/tiles/room/room.png');
     this.load.image(Tile.HOLE, 'assets/tiles/room/part/hole.png');

@@ -1,10 +1,11 @@
 import './scss/main.scss';
 import "@total-typescript/ts-reset";
 
-import TestScene from './js/scene/test';
+import GameScene from './js/scene/test';
 import LoaderScene from './js/scene/loader';
 import MenuScene from './js/scene/menu';
 import { config } from './config/config';
+import DialogScene from './js/scene/popup/big-dialog';
 
 const gameConfig = {
   type: Phaser.AUTO,
@@ -29,7 +30,8 @@ const gameConfig = {
   scene: [
     LoaderScene,
     MenuScene,
-    TestScene,
+    GameScene,
+    DialogScene,
   ],
 };
 

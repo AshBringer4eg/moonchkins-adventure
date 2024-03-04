@@ -15,5 +15,6 @@ export enum Monster {
 }
 
 export enum Background {
-  GRID = 'BG_GRID'
+  BG_GRID = 'BG_GRID',
+  BG_SCROLL = 'BG_SCROLL'
 }

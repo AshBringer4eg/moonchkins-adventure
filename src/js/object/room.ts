@@ -8,6 +8,8 @@ import { Compass, CompassMainAxis } from '../utility/compas';
 import { config } from '../../config/config';
 import { Color } from '../../type/enums/entity';
 import { objectKeys } from '../utility/utils';
+import GameScene from '../scene/test';
+import Dialog from '../scene/popup/big-dialog';
 
 const doorsPlaces = [CompassMainAxis.NORTH, CompassMainAxis.EAST, CompassMainAxis.SOUTH, CompassMainAxis.WEST] as const;
 
@@ -72,6 +74,8 @@ export default class Room {
   enterRoom(previousRoom: Room) {
     previousRoom.active = false;
     this.active = true;
+    this.zoomToRoom();
+
     if (!this.discovered) this.initAsRandomRoom();
   }
 
@@ -120,12 +124,27 @@ export default class Room {
       }
     });
 
+    // const gameScene = this.getScene().scene;
+    // gameScene.launch(Dialog.name, { backScene: GameScene.name });
+    // gameScene.pause(GameScene.name);
+
     return this;
   }
 
   /*
     SERVICE METHODS
   */
+
+  getScene() {
+    return this.level.scene as GameScene;
+  }
+
+  zoomToRoom() {
+    this.getScene().zoomComponent.zoomToCoordinates(
+      this.position.x + this.width / 2,
+      this.position.y + this.height / 2
+    );
+  }
 
   tint(color?: Color) {
     if (!color) {

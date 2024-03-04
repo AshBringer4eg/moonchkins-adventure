@@ -3,7 +3,6 @@ import { Pinch } from 'phaser3-rex-plugins/plugins/gestures.js';
 import { ZoomInputComponentOptions, ZoomState } from "../../../type/interface/component/zoom-input-component";
 import Component from "../component";
 import { config } from '../../../config/config';
-import Room from '../../object/room';
 
 const CAMERA_ZOOM_TIME = 200;
 
@@ -110,11 +109,6 @@ export class SceneZoomInputComponent extends Component {
     this.setZoomState({ target: zoom });
     this.camera.zoomTo(zoom, duration, 'Linear', true);
     this.camera.pan(x, y, duration, 'Linear', true);
-  }
-
-  zoomToRoom({ position, width, height }: Room) {
-    if (!this.camera) throw new Error(`Can't zoom without camera`);
-    this.zoomToCoordinates(position.x + width / 2, position.y + height / 2);
   }
 }
 

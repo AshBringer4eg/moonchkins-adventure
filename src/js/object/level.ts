@@ -30,7 +30,6 @@ export default class Level {
     this.rowCount = rowCount || this.rowCount;
     this.colCount = colCount || this.colCount;
 
-
     // Initialize battlefield with empty tiles
     this.playground = [];
     for (let row = 0; row < this.rowCount; row++) {
