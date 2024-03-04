@@ -1,18 +1,20 @@
 import Phaser from 'phaser';
-import GameScene from './test';
 import WebFontFile from '../../config/web-font-loader';
+import GameScene from './game';
 import MenuScene from './menu';
 // import SceneCameraBoundComponent from '../component/scene/camera-bounds-component';
 import { config } from '../../config/config';
-import { Background, Monster, Objects, Tile } from '../../type/enums/image';
+import { Background, Monster, Objects, Sprites, Tile } from '../../type/enums/image';
 
 export default class LoaderScene extends Phaser.Scene {
   private stage: string = 'loader class...';
+  private eventEmitter: Phaser.Events.EventEmitter;
 
   // private cameraBoundComponent: SceneCameraBoundComponent | undefined;
 
   constructor() {
     super({ key: LoaderScene.name, active: false, visible: false });
+    this.eventEmitter = new Phaser.Events.EventEmitter();
     console.log('Loader Scene');
   }
 
@@ -29,9 +31,9 @@ export default class LoaderScene extends Phaser.Scene {
 
     setTimeout(() => {
       if (config.debug){
-        return this.scene.start(GameScene.name);
+        return this.scene.start(GameScene.name, { emitter: this.eventEmitter });
       }
-      return this.scene.start(MenuScene.name);
+      return this.scene.start(MenuScene.name, { emitter: this.eventEmitter });
     }, 1);
   }
 
@@ -46,6 +48,10 @@ export default class LoaderScene extends Phaser.Scene {
 
   loadSprites(): void {
     this.stage = 'sprites';
+    this.load.spritesheet(Sprites.HEART, 'assets/ui/heart.png', {
+      frameWidth: 34,
+      frameHeight: 28,
+    });
   }
 
   loadImages(): void {

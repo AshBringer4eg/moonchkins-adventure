@@ -1,15 +1,14 @@
 import { v4 } from 'uuid';
+import { config } from '../../config/config';
+import { Color } from '../../type/enums/entity';
 import { Tile } from '../../type/enums/image';
 import { PositionOnGrid, RoomPosition } from '../../type/interface/object/room';
+import GameScene from '../scene/game';
+import { Compass, CompassMainAxis } from '../utility/compas';
+import { objectKeys } from '../utility/utils';
 import { ROOM_HEIGHT, ROOM_WIDTH } from './_const';
 import { Door } from './door';
 import Level from './level';
-import { Compass, CompassMainAxis } from '../utility/compas';
-import { config } from '../../config/config';
-import { Color } from '../../type/enums/entity';
-import { objectKeys } from '../utility/utils';
-import GameScene from '../scene/test';
-import Dialog from '../scene/popup/big-dialog';
 
 const doorsPlaces = [CompassMainAxis.NORTH, CompassMainAxis.EAST, CompassMainAxis.SOUTH, CompassMainAxis.WEST] as const;
 

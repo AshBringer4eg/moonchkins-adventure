@@ -20,4 +20,7 @@ export const config: Config = {
   resolution: Resolutions.FullHD,
   get width(): number  { return this.resolution.width; },
   get height(): number { return this.resolution.height; },
+  ui: {
+    scale: 2,
+  },
 } as const;

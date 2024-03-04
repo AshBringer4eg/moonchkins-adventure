@@ -110,5 +110,5 @@
   },
   "include": [
     "src"
-, "third_party_plugins/rexpinchplugin.js"  ]
+  ]
 }

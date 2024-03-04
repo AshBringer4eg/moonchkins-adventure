@@ -1,11 +1,14 @@
 import './scss/main.scss';
 import "@total-typescript/ts-reset";
+import Phaser from 'phaser';
 
-import GameScene from './js/scene/test';
+import GameScene from './js/scene/game';
 import LoaderScene from './js/scene/loader';
 import MenuScene from './js/scene/menu';
 import { config } from './config/config';
 import DialogScene from './js/scene/popup/big-dialog';
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+import UIScene from './js/scene/ui/ui';
 
 const gameConfig = {
   type: Phaser.AUTO,
@@ -16,7 +19,7 @@ const gameConfig = {
     // autoCenter: Phaser.Scale.CENTER_BOTH,
   },
   render: {
-    pixelArt: false,
+    pixelArt: true,
     antialias: true,
     antialiasGL: true,
   },
@@ -32,7 +35,17 @@ const gameConfig = {
     MenuScene,
     GameScene,
     DialogScene,
+    UIScene,
   ],
+  plugins: {
+    scene: [{
+      key: 'rexUI',
+      plugin: RexUIPlugin,
+      mapping: 'rexUI',
+    },
+    // ...
+    ],
+  },
 };
 
 window.addEventListener('load', () => {

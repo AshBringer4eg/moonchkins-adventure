@@ -2,6 +2,7 @@ import { inRange, isNil } from "lodash";
 import { v4 } from "uuid";
 import Room from "./room";
 import { RoomPosition } from "../../type/interface/object/room";
+import { RexUiScene } from "../../type/scene/rex-ui";
 
 /**
  * Class for creating playgraund with room tiles.
@@ -13,19 +14,19 @@ export default class Level {
 
   private playground: Room[][];
 
-  public scene: Phaser.Scene;
+  public scene: RexUiScene;
   public rowCount: number = 11;
   public colCount: number = 11;
   public startRoom: Room | undefined;
 
   /**
    * Creates an instance of Level and fills  the playground array with empty Rooms + start tuile in the center.
-   * @param {Phaser.Scene} scene
+   * @param {RexUiScene} scene
    * @param {number} [rowCount] - Represents how many rooms will be placed from LEFT to RIGHT
    * @param {number} [colCount] - Represents how many rooms will be placed from TOP to BOTTOM
    * @memberof Level - Parent Level element
    */
-  constructor(scene: Phaser.Scene, rowCount?: number, colCount?: number){
+  constructor(scene: RexUiScene, rowCount?: number, colCount?: number){
     this.scene = scene;
     this.rowCount = rowCount || this.rowCount;
     this.colCount = colCount || this.colCount;

@@ -1,0 +1,8 @@
+export enum HEALTH_EVENT {
+  LOSE_HEALTH = 'HE.LOSE_HEALTH',
+  RECEIVE_HEALTH = 'HE.RECEIVE_HEALTH'
+}
+
+export enum ACTOR_EVENT {
+  DIE = 'AE.DIED'
+}

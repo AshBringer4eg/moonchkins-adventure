@@ -18,3 +18,7 @@ export enum Background {
   BG_GRID = 'BG_GRID',
   BG_SCROLL = 'BG_SCROLL'
 }
+
+export enum Sprites {
+  HEART = 'HEART'
+}

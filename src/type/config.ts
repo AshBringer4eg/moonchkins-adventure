@@ -3,6 +3,9 @@ export interface Config {
   resolution: ResolutionInnerItem
   get width(): number
   get height(): number
+  ui: {
+    scale: number
+  }
 }
 
 export type Resolutions = {
