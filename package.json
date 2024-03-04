@@ -10,9 +10,6 @@
     "build-prod": "webpack --mode production",
     "start": "webpack serve --mode development"
   },
-  "pre-commit": [
-    "build"
-  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
